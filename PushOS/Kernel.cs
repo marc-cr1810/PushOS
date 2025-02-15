@@ -1,4 +1,6 @@
-﻿using PushOSs.System.Init;
+﻿using Cosmos.System.FileSystem;
+using Cosmos.System.FileSystem.VFS;
+using PushOSs.System.Init;
 using PushOSs.System.Utils;
 using System;
 using System.Collections.Generic;
@@ -9,14 +11,15 @@ namespace PushOSs
 {
     public class Kernel : Sys.Kernel
     {
-        enum Test
-        {
-            First, Second
-        };
+        CosmosVFS FileSystem;
 
         protected override void BeforeRun()
         {
+            FileSystem = new CosmosVFS();
+            VFSManager.RegisterVFS(FileSystem);
+
             SysInit sysinit = new SysInit();
+
             Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
         }
 
