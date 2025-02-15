@@ -1,5 +1,6 @@
 ﻿using Cosmos.System.FileSystem;
 using Cosmos.System.FileSystem.VFS;
+using PushOS.System.Process;
 using PushOSs.System.Init;
 using PushOSs.System.Utils;
 using System;
@@ -11,20 +12,24 @@ namespace PushOSs
 {
     public class Kernel : Sys.Kernel
     {
-        CosmosVFS FileSystem;
+        internal CosmosVFS FileSystem { get; private set; }
+        internal SysInit Init { get; private set; }
 
         protected override void BeforeRun()
         {
+            Console.WriteLine("Initializing file system");
             FileSystem = new CosmosVFS();
             VFSManager.RegisterVFS(FileSystem);
 
-            SysInit sysinit = new SysInit();
+            Init = new SysInit();
 
             Console.WriteLine("Cosmos booted successfully. Type a line of text to get it echoed back.");
         }
 
         protected override void Run()
         {
+            ProcessManager.Update();
+
             Console.Write("Input: ");
             var input = Console.ReadLine();
             Console.Write("Text typed: ");

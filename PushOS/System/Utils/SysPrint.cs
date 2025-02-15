@@ -13,32 +13,32 @@ namespace PushOSs.System.Utils
             Trace, Debug, Ok, Warning, Error, Fatal
         }
 
-        private static Dictionary<int, ConsoleColor> LevelColors = new Dictionary<int, ConsoleColor>()
+        private static readonly Dictionary<uint, ConsoleColor> LevelColors = new Dictionary<uint, ConsoleColor>
         {
-            { (int)Levels.Trace,     ConsoleColor.White },
-            { (int)Levels.Debug,     ConsoleColor.Cyan },
-            { (int)Levels.Ok,        ConsoleColor.Green },
-            { (int)Levels.Warning,   ConsoleColor.Yellow },
-            { (int)Levels.Error,     ConsoleColor.Red },
-            { (int)Levels.Fatal,     ConsoleColor.DarkRed },
+            { (uint)Levels.Trace,     ConsoleColor.White },
+            { (uint)Levels.Debug,     ConsoleColor.Cyan },
+            { (uint)Levels.Ok,        ConsoleColor.Green },
+            { (uint)Levels.Warning,   ConsoleColor.Yellow },
+            { (uint)Levels.Error,     ConsoleColor.Red },
+            { (uint)Levels.Fatal,     ConsoleColor.DarkRed },
         };
 
-        private static Dictionary<int, string> LevelNames = new Dictionary<int, string>()
+        private static readonly Dictionary<uint, string> LevelNames = new Dictionary<uint, string>
         {
-            { (int)Levels.Trace,     " TRACE " },
-            { (int)Levels.Debug,     " DEBUG " },
-            { (int)Levels.Ok,        "  OK   " },
-            { (int)Levels.Warning,   " WARN  " },
-            { (int)Levels.Error,     " ERROR " },
-            { (int)Levels.Fatal,     " FATAL " }
+            { (uint)Levels.Trace,     " TRACE " },
+            { (uint)Levels.Debug,     " DEBUG " },
+            { (uint)Levels.Ok,        "  OK   " },
+            { (uint)Levels.Warning,   " WARN  " },
+            { (uint)Levels.Error,     " ERROR " },
+            { (uint)Levels.Fatal,     " FATAL " }
         };
 
         private static void Print(Levels level, string message)
         {
             Console.ResetColor();
             Console.Write('[');
-            Console.ForegroundColor = LevelColors[(int)level];
-            Console.Write(LevelNames[(int)level]);
+            Console.ForegroundColor = LevelColors[(uint)level];
+            Console.Write(LevelNames[(uint)level]);
             Console.ResetColor();
             Console.WriteLine($"] {message}");
         }

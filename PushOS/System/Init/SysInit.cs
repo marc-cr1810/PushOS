@@ -1,4 +1,6 @@
-﻿using PushOSs.System.Utils;
+﻿using PushOS.System.Process;
+using PushOS.System.Users;
+using PushOSs.System.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +13,11 @@ namespace PushOSs.System.Init
     {
         public SysInit()
         {
-            SysPrint.Trace("test message");
-            SysPrint.Debug("test message");
-            SysPrint.Ok("test message");
-            SysPrint.Warning("test message");
-            SysPrint.Error("test message");
-            SysPrint.Fatal("test message");
+            SysPrint.Ok("Initializing Process Manager");
+            ProcessManager.Init();
+
+            SysPrint.Ok("Loading system users");
+            Users.LoadUsers();
         }
     }
 }
