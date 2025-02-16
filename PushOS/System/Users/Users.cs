@@ -2,11 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
-namespace PushOS.System.Users
+namespace PushOS.System
 {
     internal class Users
     {
@@ -30,6 +28,39 @@ namespace PushOS.System.Users
                     Console.WriteLine("Failed to create the root user");
                     return;
                 }
+                return;
+            }
+
+            using (var fileStream = File.OpenRead(UsersFile))
+            {
+                using (var streamReader = new StreamReader(fileStream, Encoding.UTF8, true))
+                {
+                    string line;
+                    while ((line = streamReader.ReadLine()) != null)
+                    {
+                        var sections = line.Split(':');
+                        if (sections.Length != 4)
+                        {
+                            continue;
+                        }
+
+                        uint id;
+                        if (!uint.TryParse(sections[0], out id))
+                        {
+                            continue;
+                        }
+                        var username = sections[1];
+                        var password = sections[2];
+                        uint role;
+                        if (!uint.TryParse(sections[3], out role))
+                        {
+                            continue;
+                        }
+
+                        User user = new User(id, username, password, (UserRole)role);
+                        users.Add(user);
+                    }
+                }
             }
         }
 
@@ -41,7 +72,7 @@ namespace PushOS.System.Users
                 return false;
             }
 
-            if (role == UserRole.Admin)
+            if (username != "root" && role == UserRole.Admin)
             {
                 Console.WriteLine("Only 1 administrator user can exist");
                 return false;
@@ -58,14 +89,16 @@ namespace PushOS.System.Users
 
             User user = new User(id, username, passwordHash, role);
             users.Add(user);
-            //using (StreamWriter sw = File.AppendText(UsersFile))
-            //{
-            //    sw.WriteLine($"{id}:{username}:{passwordHash}:{(int)role}");
-            //}
+
+            using (StreamWriter sw = File.AppendText(UsersFile))
+            {
+                sw.WriteLine($"{id}:{username}:{passwordHash}:{(int)role}");
+            }
+
             return true;
         }
 
-        public static User Get(string username)
+        public static User? Get(string username)
         {
             for (int i = 0; i < users.Count; i++)
             {
@@ -75,7 +108,19 @@ namespace PushOS.System.Users
                 }
             }
 
-            throw new Exception("Unknown username");
+            return null;
+        }
+
+        public static bool Validate(string username, string password)
+        {
+            User user = Get(username);
+            if (user == null)
+            {
+                return false;
+            }
+
+            var passwordHash = Sha256.Hash(password);
+            return passwordHash == user.Password;
         }
     }
 }

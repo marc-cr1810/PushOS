@@ -1,5 +1,6 @@
-﻿using PushOS.System.Process;
-using PushOS.System.Users;
+﻿using PushOS.System;
+using PushOS.System.Process;
+using PushOS.System.Process.Processes;
 using PushOSs.System.Utils;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ namespace PushOSs.System.Init
 
             SysPrint.Ok("Loading system users");
             Users.LoadUsers();
+
+            Login login = new Login();
         }
     }
 }

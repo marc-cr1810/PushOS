@@ -1,4 +1,4 @@
-﻿using PushOS.Parser.Ini;
+﻿//using PushOS.Parser.Ini;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +32,7 @@ namespace PushOS.System.Init
 
         public Service(string file)
         {
-            Config = IniFile.ToObject<ServiceConfig>(file);
+            //Config = IniFile.ToObject<ServiceConfig>(file);
         }
 
         public void Start()

@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -32,7 +31,7 @@ namespace PushOS.Security
         {
             var hash = new Sha256();
             hash.AddData(value, 0, (uint)value.Length);
-            string toreturn = Conversion.Hex(hash.GetHash());
+            string toreturn = BitConverter.ToString(hash.GetHash()).Replace("-", string.Empty);
 
             H[0] = 0x6A09E667;
             H[1] = 0xBB67AE85;
@@ -44,7 +43,6 @@ namespace PushOS.Security
             H[7] = 0x5BE0CD19;
 
             return toreturn;
-
         }
 
         private static UInt32 ROTL(UInt32 x, byte n)
